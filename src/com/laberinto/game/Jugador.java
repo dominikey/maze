@@ -16,6 +16,13 @@ public class Jugador {
     public int pasos = 0;
     public int llaves = 0;
 
+    // Estadísticas de Combate
+    public int hp = 100;
+    public int hpMax = 100;
+    public String armaEquipada = "Ninguna";
+    public int danoAtaque = 5;
+    public int enemigosDerrotados = 0;
+
     public Jugador() {
     }
 
@@ -39,6 +46,18 @@ public class Jugador {
             pasos++;
             Sonido8Bit.reproducirPaso();
         }
+    }
+
+    public void equiparArma(String nombreArma, int nuevoDano) {
+        if (nuevoDano > this.danoAtaque) {
+            this.armaEquipada = nombreArma;
+            this.danoAtaque = nuevoDano;
+        }
+    }
+
+    public void recibirDano(int cantidad) {
+        hp -= cantidad;
+        if (hp < 0) hp = 0;
     }
 
     public void render(Graphics2D g2) {

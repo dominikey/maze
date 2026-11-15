@@ -12,9 +12,14 @@ public class Main extends JFrame {
     private CardLayout cardLayout;
     private JPanel containerPanel;
     private PantallaInicio pantallaInicio;
+    private PantallaRanking pantallaRanking;
     private PanelJuego panelJuego;
 
     public Main() {
+        // 1. Inicializar SQLite al arrancar
+        BaseDatos.inicializar();
+        CargadorImagenes.cargarTodo();
+
         setTitle("Laberinto Retro RPG 16-Bit");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -22,12 +27,14 @@ public class Main extends JFrame {
         cardLayout = new CardLayout();
         containerPanel = new JPanel(cardLayout);
 
-        // Instanciar Pantalla de Inicio
-        pantallaInicio = new PantallaInicio(e -> iniciarJuego());
+        // 2. Instanciar Pantallas
+        pantallaInicio = new PantallaInicio(e -> iniciarJuego(), e -> abrirRanking());
+        pantallaRanking = new PantallaRanking(e -> volverAlMenu());
+
         containerPanel.add(pantallaInicio, "INTRO");
+        containerPanel.add(pantallaRanking, "RANKING");
 
         add(containerPanel);
-        pack();
         setSize(648, 510);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -37,16 +44,25 @@ public class Main extends JFrame {
         String nombre = pantallaInicio.getNombreJugador();
         int tipoPersonaje = pantallaInicio.getTipoPersonaje();
 
-        // Instanciar el mapa con la configuración seleccionada
-        panelJuego = new PanelJuego(nombre, tipoPersonaje);
+        // Pasamos 'this' (la referencia de Main) para que PanelJuego pueda regresar al menú
+        panelJuego = new PanelJuego(nombre, tipoPersonaje, this);
         containerPanel.add(panelJuego, "JUEGO");
 
-        // Cambiar pantalla y dar foco al teclado
         cardLayout.show(containerPanel, "JUEGO");
         panelJuego.requestFocusInWindow();
     }
 
+    private void abrirRanking() {
+        pantallaRanking.cargarDatos(); // Consulta los últimos registros de SQLite
+        cardLayout.show(containerPanel, "RANKING");
+    }
+
+    public void volverAlMenu() {
+        Sonido8Bit.detenerMusicaFondo();
+        cardLayout.show(containerPanel, "INTRO");
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Main());
+        SwingUtilities.invokeLater(Main::new);
     }
 }

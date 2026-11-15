@@ -61,41 +61,41 @@ public class TileMap {
                 int y = r * TILE_SIZE;
                 int tile = mapa[r][c];
 
-                // Dibujar Suelo base (Hierba RPG)
-                g2.setColor(new Color(40, 140, 50));
+                // 1. Suelo base (Césped RPG)
+                g2.setColor(new Color(50, 155, 60));
                 g2.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-                g2.setColor(new Color(30, 120, 40));
-                g2.fillRect(x + 4, y + 4, 4, 4);
-                g2.fillRect(x + 20, y + 16, 4, 4);
+                g2.setColor(new Color(40, 135, 50));
+                g2.fillRect(x + 5, y + 6, 3, 3);
+                g2.fillRect(x + 21, y + 18, 3, 3);
 
-                // Renderizado según el tipo
-                if (tile == 1) { // Árbol / Bosque
-                    g2.setColor(new Color(15, 70, 25));
-                    g2.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-                    g2.setColor(new Color(25, 100, 35));
-                    g2.fillOval(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
-                } else if (tile == 2) { // NPC Anciano
-                    g2.setColor(new Color(150, 80, 200));
-                    g2.fillOval(x + 6, y + 6, 20, 20);
-                } else if (tile == 3) { // Cartel de Madera
-                    g2.setColor(new Color(139, 69, 19));
-                    g2.fillRect(x + 8, y + 12, 16, 12);
-                    g2.fillRect(x + 14, y + 24, 4, 8);
-                } else if (tile == 4) { // Cofre con Llave
-                    g2.setColor(new Color(218, 165, 32));
-                    g2.fillRect(x + 6, y + 8, 20, 16);
-                    g2.setColor(Color.BLACK);
-                    g2.drawRect(x + 6, y + 8, 20, 16);
-                } else if (tile == 5) { // Puerta con Candado
-                    g2.setColor(new Color(100, 100, 100));
-                    g2.fillRect(x + 4, y + 2, 24, 28);
-                    g2.setColor(Color.YELLOW);
-                    g2.fillOval(x + 12, y + 12, 8, 8);
+                // 2. Elementos con tus imágenes personalizadas (con respaldo automático)
+                if (tile == 1) { // Árbol
+                    if (CargadorImagenes.imgArbol != null) {
+                        g2.drawImage(CargadorImagenes.imgArbol, x, y, null);
+                    } else {
+                        SpriteRenderer.dibujarArbolRespaldo(g2, x, y, TILE_SIZE);
+                    }
+                } else if (tile == 2) { // Aldeano Anciano
+                    SpriteRenderer.dibujarAldeano(g2, x, y, TILE_SIZE, 0);
+                } else if (tile == 3) { // Aldeano Explorador (antes cartel)
+                    SpriteRenderer.dibujarAldeano(g2, x, y, TILE_SIZE, 1);
+                } else if (tile == 4) { // Cofre
+                    if (CargadorImagenes.imgCofre != null) {
+                        g2.drawImage(CargadorImagenes.imgCofre, x, y, null);
+                    } else {
+                        SpriteRenderer.dibujarCofreRespaldo(g2, x, y, TILE_SIZE);
+                    }
+                } else if (tile == 5) { // Puerta
+                    if (CargadorImagenes.imgPuerta != null) {
+                        g2.drawImage(CargadorImagenes.imgPuerta, x, y, null);
+                    } else {
+                        SpriteRenderer.dibujarPuertaRespaldo(g2, x, y, TILE_SIZE);
+                    }
                 } else if (tile == 9) { // Meta Resplandeciente
                     g2.setColor(new Color(255, 215, 0));
-                    g2.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+                    g2.fillRect(x + 3, y + 3, TILE_SIZE - 6, TILE_SIZE - 6);
                     g2.setColor(Color.WHITE);
-                    g2.fillOval(x + 8, y + 8, 16, 16);
+                    g2.drawRect(x + 6, y + 6, TILE_SIZE - 12, TILE_SIZE - 12);
                 }
             }
         }

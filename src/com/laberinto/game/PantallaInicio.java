@@ -12,31 +12,29 @@ public class PantallaInicio extends JPanel {
 
     private JTextField txtNombre;
     private JRadioButton rbdNino, rbdNina;
-    private ButtonGroup grupoSexo;
-    private JButton btnIniciar;
     private int selectorPersonaje = 0; // 0: Niño, 1: Niña
 
-    public PantallaInicio(ActionListener alIniciar) {
+    public PantallaInicio(ActionListener alIniciar, ActionListener alVerRanking) {
         setLayout(null);
         setBackground(new Color(15, 15, 30));
 
         // Título Retro
-        JLabel lblTitulo = new JLabel("LABERINTO RPG 8-BIT", SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Monospaced", Font.BOLD, 24));
+        JLabel lblTitulo = new JLabel("LABERINTO RPG 16-BIT", SwingConstants.CENTER);
+        lblTitulo.setFont(new Font("Monospaced", Font.BOLD, 26));
         lblTitulo.setForeground(new Color(255, 215, 0));
-        lblTitulo.setBounds(20, 30, 600, 40);
+        lblTitulo.setBounds(20, 25, 600, 40);
         add(lblTitulo);
 
         // Campo de Nombre
         JLabel lblNombre = new JLabel("Nombre del Héroe:");
         lblNombre.setFont(new Font("Monospaced", Font.BOLD, 14));
         lblNombre.setForeground(Color.WHITE);
-        lblNombre.setBounds(150, 110, 200, 25);
+        lblNombre.setBounds(150, 95, 200, 25);
         add(lblNombre);
 
         txtNombre = new JTextField("Trainer");
         txtNombre.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        txtNombre.setBounds(310, 110, 180, 25);
+        txtNombre.setBounds(310, 95, 180, 25);
         add(txtNombre);
 
         // Selector de Personaje
@@ -46,14 +44,14 @@ public class PantallaInicio extends JPanel {
         rbdNino.setFont(new Font("Monospaced", Font.BOLD, 14));
         rbdNino.setForeground(Color.WHITE);
         rbdNino.setOpaque(false);
-        rbdNino.setBounds(200, 160, 80, 25);
+        rbdNino.setBounds(200, 140, 80, 25);
 
         rbdNina.setFont(new Font("Monospaced", Font.BOLD, 14));
         rbdNina.setForeground(Color.WHITE);
         rbdNina.setOpaque(false);
-        rbdNina.setBounds(360, 160, 80, 25);
+        rbdNina.setBounds(360, 140, 80, 25);
 
-        grupoSexo = new ButtonGroup();
+        ButtonGroup grupoSexo = new ButtonGroup();
         grupoSexo.add(rbdNino);
         grupoSexo.add(rbdNina);
         add(rbdNino);
@@ -62,15 +60,25 @@ public class PantallaInicio extends JPanel {
         rbdNino.addActionListener(e -> { selectorPersonaje = 0; repaint(); });
         rbdNina.addActionListener(e -> { selectorPersonaje = 1; repaint(); });
 
-        // Botón de Inicio
-        btnIniciar = new JButton("INICIAR AVENTURA");
-        btnIniciar.setFont(new Font("Monospaced", Font.BOLD, 16));
+        // Botón: Nueva Partida
+        JButton btnIniciar = new JButton("NUEVA PARTIDA");
+        btnIniciar.setFont(new Font("Monospaced", Font.BOLD, 15));
         btnIniciar.setBackground(new Color(40, 180, 70));
         btnIniciar.setForeground(Color.WHITE);
         btnIniciar.setFocusPainted(false);
-        btnIniciar.setBounds(210, 380, 220, 45);
+        btnIniciar.setBounds(100, 385, 200, 45);
         btnIniciar.addActionListener(alIniciar);
         add(btnIniciar);
+
+        // Botón: Ranking
+        JButton btnRanking = new JButton("RANKING / TOP");
+        btnRanking.setFont(new Font("Monospaced", Font.BOLD, 15));
+        btnRanking.setBackground(new Color(40, 110, 210));
+        btnRanking.setForeground(Color.WHITE);
+        btnRanking.setFocusPainted(false);
+        btnRanking.setBounds(340, 385, 200, 45);
+        btnRanking.addActionListener(alVerRanking);
+        add(btnRanking);
     }
 
     public String getNombreJugador() {
@@ -87,19 +95,18 @@ public class PantallaInicio extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         // Marco retro de vista previa
-        g2.setColor(new Color(40, 40, 70));
-        g2.fillRect(260, 210, 120, 140);
+        g2.setColor(new Color(35, 35, 65));
+        g2.fillRect(260, 190, 120, 145);
         g2.setColor(Color.WHITE);
-        g2.drawRect(260, 210, 120, 140);
+        g2.drawRect(260, 190, 120, 145);
 
         g2.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        g2.drawString("VISTA PREVIA", 278, 230);
+        g2.drawString("VISTA PREVIA", 278, 212);
 
-        // Renderizado del sprite seleccionado escala 2X
         if (selectorPersonaje == 0) {
-            SpriteRenderer.dibujarNino(g2, 304, 260, 32, 0);
+            SpriteRenderer.dibujarNino(g2, 304, 245, 32, 0);
         } else {
-            SpriteRenderer.dibujarNina(g2, 304, 260, 32, 0);
+            SpriteRenderer.dibujarNina(g2, 304, 245, 32, 0);
         }
     }
 }
